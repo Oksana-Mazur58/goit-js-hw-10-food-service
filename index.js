@@ -18,40 +18,39 @@ const Theme = {
 };
 const { LIGHT, DARK } = Theme;
 
-
-bodyRef.classList.add(LIGHT)
-
-
-
 themeSwitchRef.addEventListener('change', darkThemeTurnOn);
-const valueThem = (localStorage.getItem('Theme'));
+
 const changeClass = (oldClass, newClass) => {
     bodyRef.classList.remove(oldClass)
-    bodyRef.classList.add(newClass)  
+    bodyRef.classList.add(newClass)
+};
+
+const updateLocalStorage = (key, value) => {
+    localStorage.setItem(key, value);
 }
 
-
-function darkThemeTurnOn() {
-    if (bodyRef.classList.contains(LIGHT)) {
+function darkThemeTurnOn(e) {
+    if (e.target.checked) {
         changeClass(LIGHT, DARK)
-        localStorage.setItem('Theme', DARK)
-        themeSwitchRef.setAttribute('checked', true)
+        updateLocalStorage("Theme", DARK)
+        
         
     } else {
         changeClass(DARK, LIGHT)
-        localStorage.setItem('Theme', LIGHT)
-       
-       
+        updateLocalStorage('Theme', LIGHT)
+      
     }
 }
-// if (valueThem === Theme.DARK) {
-//     onDarkThem();
-// };
-getLocalStorageKey()
+
+
 function getLocalStorageKey() {
     const saveValue = localStorage.getItem('Theme')
-    if (saveValue) {
-        bodyRef.classList.add(saveValue)
-        
-    }
+    
+    bodyRef.classList.add(saveValue)
+    updateLocalStorage("Theme", saveValue)
+    
+    const flag = saveValue === DARK;
+    themeSwitchRef.checked = flag;    
+    
 }
+getLocalStorageKey()
