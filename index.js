@@ -3,19 +3,55 @@ import menuList from './menu.json';
 
 
 const galleryMenuRef = document.querySelector('.js-menu');
+const bodyRef = document.querySelector('body');
+const themeSwitchRef = document.getElementById('theme-switch-toggle');
+
+
 const greateMenu = listMenuTpl(menuList);
 galleryMenuRef.insertAdjacentHTML('beforeend', greateMenu);
 
 
-// Добавь функционал изменения темы при нажатии(событие change) на чекбокс #theme -switch-toggle в тулбаре.
 
-// По умолчанию тема светлая.
-// При изменении темы, необходимо добавлять на элемент body класс light - theme или dark - theme.
-// Выбранная тема должна сохраняться между перезагрузками страницы.Для хранения темы используй localStorage.
-// Если при загрузке страницы тема тёмная, не забудь поставить свойство checked у чекбокса #theme -switch-toggle в true, чтобы ползунок сдвинулся в правильное положение.
-// Для удобства хранения списка тем используй такое перечисление.
+const Theme = {
+    LIGHT: 'light-theme',
+    DARK: 'dark-theme',
+};
+const { LIGHT, DARK } = Theme;
 
-// const Theme = {
-//     LIGHT: 'light-theme',
-//     DARK: 'dark-theme',
+
+bodyRef.classList.add(LIGHT)
+
+
+
+themeSwitchRef.addEventListener('change', darkThemeTurnOn);
+const valueThem = (localStorage.getItem('Theme'));
+const changeClass = (oldClass, newClass) => {
+    bodyRef.classList.remove(oldClass)
+    bodyRef.classList.add(newClass)  
+}
+
+
+function darkThemeTurnOn() {
+    if (bodyRef.classList.contains(LIGHT)) {
+        changeClass(LIGHT, DARK)
+        localStorage.setItem('Theme', DARK)
+        themeSwitchRef.setAttribute('checked', true)
+        
+    } else {
+        changeClass(DARK, LIGHT)
+        localStorage.setItem('Theme', LIGHT)
+       
+       
+    }
+}
+// if (valueThem === Theme.DARK) {
+//     onDarkThem();
 // };
+getLocalStorageKey()
+function getLocalStorageKey() {
+    const saveValue = localStorage.getItem('Theme')
+    if (saveValue) {
+        bodyRef.classList.add(saveValue)
+        
+    }
+}
